@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#f7f2e7" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#12100e" media="(prefers-color-scheme: dark)" />
+<meta name="description" content="408 历年大题答案标准 2009–2026：默认只看答案，展开看详解与书写注意事项。" />
+<title>408 大题答案</title>
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="408答案" />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="apple-touch-icon" href="icons/icon-180.png" />
+<link rel="icon" href="icons/icon-192.png" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div class="shell">
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">408</span>
+      <span class="brand-name">大题答案</span>
+    </div>
+    <button id="randomBtn" class="ghost-btn" type="button" title="随机抽一题">随机</button>
+  </header>
+
+  <div class="searchbar">
+    <div class="search-row">
+      <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+      <input id="q" type="search" inputmode="search" autocomplete="off" enterkeyhint="search"
+             placeholder="搜年份、学科、题目名、考点…" aria-label="搜索" />
+      <button id="clearBtn" class="clear-btn" type="button" hidden aria-label="清空">×</button>
+    </div>
+    <div id="suggests" class="suggests"></div>
+  </div>
+
+  <div class="filters">
+    <div class="chip-row" id="yearRow" role="group" aria-label="按年份筛选"></div>
+    <div class="chip-row" id="subjectRow" role="group" aria-label="按学科筛选"></div>
+  </div>
+
+  <div class="meta-row">
+    <span id="count" class="count"></span>
+    <span class="meta-actions">
+      <button id="expandAll" class="link-btn" type="button">展开全部</button>
+      <button id="collapseAll" class="link-btn" type="button">收起全部</button>
+    </span>
+  </div>
+
+  <main id="list" class="list" aria-live="polite"></main>
+  <p id="empty" class="empty" hidden>没有匹配的题目，换个词试试（例如「关键路径」「Cache」「2021」）。</p>
+  <footer class="foot">
+    <span id="footNote"></span>
+  </footer>
+</div>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+.build-android/
+dist/
+.shots/
+node_modules/
+android/assets/
+android/keystore.p12
+*.log

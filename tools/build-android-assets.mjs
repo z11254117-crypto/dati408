@@ -7,10 +7,21 @@ const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 const ASSETS = join(ROOT, "android", "assets");
 
 const data = await readFile(join(ROOT, "js", "data.js"), "utf8");
+const store = await readFile(join(ROOT, "js", "store.js"), "utf8");
 const app = await readFile(join(ROOT, "js", "app.js"), "utf8");
 
 const dataBody = data.replace(/^export\s+/gm, "");
 if (/^export\s/m.test(dataBody)) throw new Error("data.js 里还有 export 没处理");
+
+// store.js 的导出聚成 app.js 用的 S 命名空间
+const storeNames = [];
+const storeBody = store
+  .replace(/^export\s+(function|const|let|class)\s+([A-Za-z0-9_$]+)/gm, (_m, kind, name) => {
+    storeNames.push(name);
+    return kind + " " + name;
+  })
+  .replace(/^export\s*\{[^}]*\};?\s*$/gm, "");
+if (storeNames.length < 10) throw new Error("store.js 导出解析失败: " + storeNames.length);
 
 const appBody = app.replace(/^import\s+[^;]*;\s*$/gm, "");
 if (/^import\s/m.test(appBody)) throw new Error("app.js 里还有 import 语句没处理");
@@ -20,6 +31,8 @@ const bundle = [
   "(function () {",
   '"use strict";',
   dataBody,
+  storeBody,
+  "var S = { " + storeNames.join(", ") + " };",
   appBody,
   "})();",
   "",
@@ -40,4 +53,4 @@ await writeFile(join(ASSETS, "index.html"), html);
 
 const { execFileSync } = await import("node:child_process");
 execFileSync(process.execPath, ["--check", join(ASSETS, "js", "bundle.js")], { stdio: "inherit" });
-console.log("android assets ok · bundle " + bundle.length + " 字节");
+console.log("android assets ok · bundle " + bundle.length + " 字节 · store 导出 " + storeNames.length + " 个");

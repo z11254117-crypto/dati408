@@ -4,7 +4,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
-const SRC = process.env.DATA_SRC || join(ROOT, "..", "408exam", "out2");
+const SRC = process.env.DATA_SRC || join(ROOT, "..", "408exam", "out4");
 
 const files = (await readdir(SRC)).filter((f) => f.endsWith(".json")).sort();
 const items = [];
@@ -23,6 +23,9 @@ for (const f of files) {
       budgetMin: it.budgetMin ? String(it.budgetMin) : "",
       detail: String(it.detail || ""),
       kp: Array.isArray(it.kp) ? it.kp.map(String) : [],
+      subs: Array.isArray(it.subs)
+        ? it.subs.map((s) => ({ label: String(s.label || ""), hint: String(s.hint || "") }))
+        : [],
       answerKey: (it.answerKey || []).map(String),
       mustWrite: (it.mustWrite || []).map(String),
       skip: (it.skip || []).map(String),

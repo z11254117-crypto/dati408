@@ -25,6 +25,12 @@ test("每题关键字段齐全", () => {
     assert.ok(q.title && q.title.length >= 4, id + " 缺题目名");
     assert.ok(Array.isArray(q.kp) && q.kp.length >= 2, id + " 考点少于 2 个");
     assert.ok(q.detail && q.detail.length >= 20, id + " 缺详解");
+    assert.ok(Array.isArray(q.subs) && q.subs.length >= 1, id + " 缺小问结构");
+    assert.ok(q.subs.length <= 8, id + " 小问过多，可能拆错了");
+    for (const sp of q.subs) {
+      assert.ok(sp.label, id + " 小问缺编号");
+      assert.ok(sp.hint && sp.hint.length >= 2, id + " 小问缺提问说明");
+    }
     assert.ok(q.answerKey.length >= 1, id + " 缺答案要点");
     assert.ok(q.mustWrite.length >= 1, id + " 缺书写要点");
     assert.ok(q.budgetMin && Number(q.budgetMin) > 0, id + " 缺目标用时");
@@ -42,6 +48,13 @@ test("题目名不重复且不是泛称", () => {
       assert.notEqual(q.title.trim(), b, q.year + "-" + q.qno + " 题目名仍是泛称");
     }
   }
+});
+
+test("小问结构可点选", () => {
+  const total = QUESTIONS.reduce((n, q) => n + q.subs.length, 0);
+  assert.ok(total >= 200, "小问总数偏少：" + total);
+  const single = QUESTIONS.filter((q) => q.subs.length === 1 && q.subs[0].label === "本题").length;
+  assert.ok(single <= 40, "整题一问的数量偏多：" + single);
 });
 
 test("考点词可用于搜索", () => {

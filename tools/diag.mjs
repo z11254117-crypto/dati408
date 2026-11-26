@@ -1,0 +1,11 @@
+import { createRequire } from 'module';
+const require = createRequire("E:/DSH-home/profiles/desktop/node_modules/");
+const puppeteer = require("puppeteer-core");
+const browser = await puppeteer.launch({ executablePath: "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe", args: ["--no-sandbox"] });
+const page = await browser.newPage();
+let stack = "";
+page.on("pageerror", e => { stack = (e && e.stack) ? e.stack : String(e); });
+await page.goto("http://127.0.0.1:8791/", { waitUntil: "networkidle0" });
+await new Promise(r => setTimeout(r, 1000));
+await browser.close();
+console.log(stack.slice(0, 1200));

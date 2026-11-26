@@ -21,5 +21,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- 拍照时给相机一个可写的 content:// 地址，只暴露 App 自己的缓存目录 -->
+        <provider
+            android:name=".ShotProvider"
+            android:authorities="com.zach.dati408.shots"
+            android:exported="false"
+            android:grantUriPermissions="true" />
     </application>
 </manifest>
